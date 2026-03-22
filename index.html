@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choi Inyoung — UX/UI Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --bg:      #FAF8F4;
+      --bg2:     #F2EFE9;
+      --bg3:     #E8E4DC;
+      --ink:     #1A1714;
+      --ink2:    #6B6560;
+      --ink3:    #92887c;
+      --acc:     #E07020;
+      --acc-d:   #B85810;
+      --acc-l:   #F08C40;
+      --acc2:    #3a54aa;
+      --line:    rgba(26,23,20,0.09);
+      --serif:   'Playfair Display', Georgia, serif;
+      --sans:    'DM Sans', -apple-system, sans-serif;
+      --mono:    'DM Mono', 'Courier New', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:      #131110;
+      --bg2:     #1C1A18;
+      --bg3:     #272420;
+      --ink:     #F0EDE8;
+      --ink2:    #d6cec7;
+      --ink3:    #bbb1a7;
+      --acc:     #F4911F;
+      --acc-d:   #D07010;
+      --acc-l:   #FFAC50;
+      --acc2:    #31429e;
+      --line:    rgba(240,237,232,0.08);
+    }
+
+    /* ── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.7;
+      transition: background .4s, color .4s;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center;
+      padding: 0 400px; height: 52px;
+      transition: background .4s;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 17px; font-weight: 700;
+      color: var(--ink); letter-spacing: -.5px;
+    }
+    .nav-logo span { color: var(--acc); }
+    .nav-items {
+      display: flex; gap: 32px; margin: 0 auto;
+    }
+    .nav-item {
+      font-size: 12px; color: var(--ink3);
+      cursor: pointer; letter-spacing: .5px;
+      font-weight: 500; transition: color .2s;
+    }
+    .nav-item:hover { color: var(--ink); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .mode-btn {
+      background: var(--bg3); border: 1px solid var(--line);
+      color: var(--ink2); font-size: 11px;
+      padding: 5px 14px; border-radius: 20px;
+      cursor: pointer; font-weight: 500;
+      transition: all .3s; font-family: var(--sans);
+    }
+    .mode-btn:hover { background: var(--bg2); color: var(--ink); }
+
+    /* ── SECTION FADE-IN ─────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── SHARED LAYOUT ───────────────────────────────────── */
+    .sec-pad { padding: 52px 400px; border-bottom: 1px solid var(--line); }
+    .sec-eyebrow {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 36px;
+    }
+    .eyebrow-num {
+      font-size: 10px; color: var(--acc);
+      font-weight: 600; letter-spacing: 2px;
+      font-family: var(--mono);
+    }
+    .eyebrow-title {
+      font-family: var(--serif); font-size: 13px;
+      color: var(--ink2); font-style: italic;
+    }
+    .eyebrow-line { flex: 1; height: 1px; background: var(--line); }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-l {
+      padding: 52px 50px 52px 400px;
+      display: flex; flex-direction: column;
+      justify-content: space-between; gap: 24px;
+      border-right: 1px solid var(--line);
+    }
+    .hero-r {
+      padding: 52px 400px 52px 120px;
+      display: flex; flex-direction: column;
+      justify-content: center; gap: 18px;
+    }
+    .issue-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 10px; letter-spacing: 2px;
+      color: var(--acc); font-weight: 600;
+      font-family: var(--mono);
+    }
+    .issue-tag::before {
+      content: ''; width: 16px; height: 1px; background: var(--acc);
+    }
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(44px, 5.5vw, 80px);
+      line-height: .95; letter-spacing: -3px; color: var(--ink);
+    }
+    .hero-headline em { color: var(--acc); font-style: italic; }
+    .hero-sub {
+      font-size: 13px; color: var(--ink2);
+      line-height: 1.85; max-width: 300px;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--acc); color: #fff;
+      font-size: 12px; font-weight: 600; letter-spacing: .5px;
+      padding: 12px 24px; border-radius: 4px; border: none;
+      cursor: pointer; transition: background .25s;
+      width: fit-content; font-family: var(--sans);
+    }
+    .hero-cta:hover { background: var(--acc-d); }
+    .cta-arrow { transition: transform .2s; }
+    .hero-cta:hover .cta-arrow { transform: translateX(4px); }
+    .vol-label {
+      font-size: 9px; color: var(--ink3);
+      letter-spacing: 2px; font-family: var(--mono);
+    }
+    .name-stack {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 42px);
+      color: var(--ink); line-height: 1.15; letter-spacing: -1px;
+    }
+    .role-pill {
+      display: inline-block; background: var(--acc); color: #fff;
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 4px 12px; border-radius: 2px;
+      font-family: var(--mono);
+    }
+    .hero-meta {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--line);
+    }
+    .meta-cell {
+      background: var(--bg); padding: 13px 20px;
+      transition: background .4s;
+    }
+    .meta-label {
+      font-size: 9px; color: var(--ink3);
+      letter-spacing: 1.5px; margin-bottom: 4px;
+      font-family: var(--mono);
+    }
+    .meta-val { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .meta-val small {
+      font-size: 11px; font-weight: 400; color: var(--ink2);
+    }
+    .route-strip {
+      border-top: 1px solid var(--line); padding-top: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .route-node {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--acc2); flex-shrink: 0;
+    }
+    .route-dash {
+      flex: 1; height: 1px; background: var(--line); position: relative;
+    }
+    .route-dash::after {
+      content: ''; position: absolute; top: -1px; left: 0;
+      height: 3px; width: 40%; background: var(--acc); border-radius: 2px;
+    }
+    .route-end {
+      font-size: 9px; color: var(--acc2);
+      letter-spacing: 1px; font-family: var(--mono);
+    }
+
+    /* ── PROJECTS ────────────────────────────────────────── */
+    .proj-feature {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line); margin-bottom: 1px;
+      transition: border-color .2s;
+    }
+    .proj-feature:hover { border-color: var(--acc); }
+    .feat-main {
+      padding: 32px 36px; cursor: pointer;
+    }
+    .feat-num {
+      font-size: 9px; color: var(--ink3);
+      letter-spacing: 2px; margin-bottom: 10px;
+      font-family: var(--mono);
+    }
+    .feat-name {
+      font-family: var(--serif); font-size: 42px;
+      color: var(--ink); letter-spacing: -2px;
+      line-height: 1; margin-bottom: 4px;
+    }
+    .feat-em { color: var(--acc); font-style: italic; }
+    .feat-org {
+      font-size: 12px; color: var(--ink3); margin-bottom: 16px;
+    }
+    .feat-desc {
+      font-size: 13px; color: var(--ink2);
+      line-height: 1.75; max-width: 360px;
+    }
+    .feat-tags { display: flex; gap: 7px; margin-top: 18px; }
+    .feat-tag {
+      font-size: 10px; font-weight: 600;
+      padding: 3px 10px; border-radius: 2px; letter-spacing: .5px;
+      font-family: var(--mono);
+    }
+    .tag-acc { background: var(--acc); color: #fff; }
+    .tag-out { border: 1px solid var(--line); color: var(--ink3); }
+    .feat-side {
+      padding: 32px 28px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .feat-side::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 21%;
+      height: 28%;
+      width: 1px;
+      background: var(--line);
+    }
+    .side-role-label {
+      font-size: 9px; color: var(--ink3);
+      letter-spacing: 1.5px; margin-bottom: 6px;
+      font-family: var(--mono);
+    }
+    .side-role-val {
+      font-size: 13px; color: var(--ink); font-weight: 500;
+    }
+    .side-year {
+      font-family: var(--serif); font-size: 34px;
+      color: var(--bg3); font-weight: 700;
+      letter-spacing: -1px; transition: color .4s;
+    }
+    .side-arr {
+      font-size: 36px; color: var(--acc);
+      font-weight: 700; align-self: flex-end; margin-left: auto;
+    }
+    .proj-small-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--line);
+    }
+    .proj-small {
+      background: var(--bg); padding: 28px 32px;
+      cursor: pointer; transition: background .2s;
+      display: flex; flex-direction: column;
+    }
+    .proj-small:hover { background: var(--bg2); }
+    .ps-num {
+      font-size: 9px; color: var(--ink3);
+      letter-spacing: 2px; margin-bottom: 8px;
+      font-family: var(--mono);
+    }
+    .ps-name {
+      font-family: var(--serif); font-size: 32px;
+      color: var(--ink); letter-spacing: -1px; margin-bottom: 6px;
+    }
+    .ps-sub {
+      font-size: 12px; color: var(--ink3);
+      margin-bottom: 16px; flex: 1; line-height: 1.65;
+    }
+    .ps-foot {
+      display: flex; justify-content: flex-start; align-items: center;
+      gap: 6px; flex-wrap: wrap;
+    }
+    .ps-tag {
+      font-size: 10px; font-weight: 600;
+      padding: 3px 10px; border-radius: 2px;
+      letter-spacing: .5px; font-family: var(--mono);
+    }
+    .ps-tag-acc { background: var(--acc); color: #fff; }
+    .ps-tag-out { border: 1px solid var(--line); color: var(--ink3); }
+    .ps-arr { font-size: 36px; color: var(--acc); font-weight: 700; margin-left: auto; }
+
+    /* ── ABOUT ───────────────────────────────────────────── */
+    .about-sec {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+    .about-l { padding: 52px 50px 52px 400px; border-right: 1px solid var(--line); }
+    .about-big {
+      font-family: var(--serif);
+      font-size: clamp(32px, 3.5vw, 58px);
+      letter-spacing: -2px; line-height: 1.2;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .about-big em { color: var(--acc); font-style: normal; }
+    .about-body {
+      font-size: 13px; color: var(--ink2);
+      line-height: 1.95; max-width: 440px;
+    }
+    .about-r { padding: 52px 400px 52px 120px; }
+    .tl-item {
+      display: grid; grid-template-columns: 110px 1fr;
+      gap: 16px; padding: 18px 0;
+      border-top: 1px solid var(--line);
+    }
+    .tl-yr {
+      font-size: 13px; color: var(--acc); font-weight: 600;
+      padding-top: 0; font-family: var(--serif);
+      font-style: italic;
+    }
+    .tl-t {
+      font-size: 13px; font-weight: 600;
+      color: var(--ink); margin-bottom: 4px;
+      padding-top: 1px;
+    }
+    .tl-s { font-size: 11px; color: var(--ink3); line-height: 1.65; }
+
+    /* ── SKILLS ──────────────────────────────────────────── */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--line);
+    }
+    .sk-cell {
+      background: var(--bg); padding: 28px 26px;
+      transition: background .2s;
+    }
+    .sk-cell:hover { background: var(--bg2); }
+    .sk-icon {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: var(--acc); margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sk-icon svg {
+      width: 16px; height: 16px; stroke: #fff;
+      fill: none; stroke-width: 2; stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sk-name {
+      font-size: 14px; font-weight: 600;
+      color: var(--ink); margin-bottom: 6px;
+    }
+    .sk-desc {
+      font-size: 12px; color: var(--ink3);
+      line-height: 1.65; margin-bottom: 14px;
+    }
+    .sk-bar { height: 2px; background: var(--bg3); border-radius: 1px; }
+    .sk-fill { height: 2px; background: var(--acc); border-radius: 1px; }
+    .sk-pct {
+      font-size: 11px; color: var(--acc);
+      font-weight: 600; margin-top: 5px;
+      font-family: var(--mono);
+    }
+
+    /* ── CONTACT ─────────────────────────────────────────── */
+    .contact-sec {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+    .contact-l {
+      padding: 52px 50px 52px 400px; border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .contact-big {
+      font-family: var(--serif);
+      font-size: clamp(36px, 4.5vw, 64px);
+      letter-spacing: -3px; line-height: 1.2;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .contact-big em { color: var(--acc); font-style: normal; }
+    .contact-note {
+      font-size: 13px; color: var(--ink2);
+      line-height: 1.85; max-width: 420px;
+    }
+    .contact-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--acc2); color: #fff;
+      font-size: 12px; font-weight: 600; letter-spacing: .5px;
+      padding: 12px 24px; border-radius: 4px; border: none;
+      cursor: pointer; transition: opacity .3s;
+      width: fit-content; margin-top: 28px; font-family: var(--sans);
+    }
+    .contact-cta:hover { opacity: .88; }
+    .contact-r {
+      padding: 52px 400px 52px 80px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .ci {
+      padding: 22px 0; border-top: 1px solid var(--line);
+      display: grid; grid-template-columns: 88px 1fr;
+      gap: 14px; align-items: center;
+    }
+    .ci-k {
+      font-size: 9px; color: var(--ink3);
+      letter-spacing: 2px; font-weight: 600; font-family: var(--mono);
+    }
+    .ci-v { font-size: 13px; color: var(--ink); font-weight: 500; }
+    .ci-v.open { color: var(--acc); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .foot {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 400px; background: var(--ink);
+      transition: background .4s;
+    }
+    [data-theme="dark"] .foot { background: var(--bg2); }
+    .foot-l {
+      font-size: 11px; color: rgba(255,255,255,.35); letter-spacing: .5px;
+    }
+    [data-theme="dark"] .foot-l { color: var(--ink3); }
+    .foot-logo {
+      font-family: var(--serif); font-size: 14px;
+      color: var(--acc-l); letter-spacing: -.3px;
+    }
+    .foot-r { font-size: 11px; color: rgba(255,255,255,.22); }
+    [data-theme="dark"] .foot-r { color: var(--ink3); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 0 24px; }
+      .nav-items { display: none; }
+      .hero, .about-sec, .contact-sec {
+        grid-template-columns: 1fr;
+      }
+      .hero-l, .about-l {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .contact-l { border-right: none; border-bottom: 1px solid var(--line); }
+      .sec-pad, .hero-l, .hero-r,
+      .about-l, .about-r, .contact-l, .contact-r {
+        padding: 36px 24px;
+      }
+      .proj-feature {
+        display: grid; grid-template-columns: 1fr 1fr;
+        border: 1px solid var(--line); margin-bottom: 1px;
+        transition: border-color .2s;
+        position: relative;
+      }
+      .feat-side {
+        padding: 32px 28px;
+        display: flex; flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .proj-small-row { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .foot { padding: 20px 24px; }
+    }
+    @media (max-width: 560px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .hero-headline { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">C<span>.</span>IY</div>
+  <div class="nav-items">
+    <a class="nav-item" href="#work">Projects</a>
+    <a class="nav-item" href="#about">About</a>
+    <a class="nav-item" href="#skills">Skills</a>
+    <a class="nav-item" href="#contact">Contact</a>
+  </div>
+  <div class="nav-right">
+    <button class="mode-btn" id="modeBtn" onclick="toggleMode()">◐ MODE</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero reveal visible">
+  <div class="hero-l">
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <div class="issue-tag">PORTFOLIO 2026</div>
+      <div class="hero-headline">
+        <span style="white-space:nowrap;">UX Design <span style="font-size:25px;letter-spacing:-1px;font-style:normal;">as a</span></span><br>
+        <em style="font-size:clamp(57px,7.15vw,104px);font-weight:700;line-height:1;">Route</em>
+      </div>
+      <div class="hero-sub">
+        사용자에게 딱 맞는 경로를 설계하는 디자이너.<br>
+        목적지까지 가장 자연스럽게 이어지는 경험을 만듭니다.
+      </div>
+    </div>
+    <button class="hero-cta" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})">
+      경로 안내 시작 <span class="cta-arrow">→</span>
+    </button>
+  </div>
+  <div class="hero-r">
+    <div class="vol-label">DESIGNER</div>
+    <div class="name-stack">최인영<br>Choi Inyoung</div>
+    <div class="role-pill">UX / UI DESIGNER</div>
+    <div class="hero-meta">
+      <div class="meta-cell">
+        <div class="meta-label">EDUCATION</div>
+        <div class="meta-val">홍익대학교 <small>디지털미디어디자인</small></div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">EXPERIENCE</div>
+        <div class="meta-val">(주)바우디움 <small>UX 디자이너</small></div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">PROJECTS</div>
+        <div class="meta-val">3 <small>works</small></div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">LOCATION</div>
+        <div class="meta-val">Seoul <small>KR</small></div>
+      </div>
+    </div>
+    <div class="route-strip">
+      <div class="route-node"></div>
+      <div class="route-dash"></div>
+      <div class="route-end">DESTINATION</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="sec-pad reveal" id="work">
+  <div class="sec-eyebrow">
+    <div class="eyebrow-num">01</div>
+    <div class="eyebrow-title">경유지 · Projects</div>
+    <div class="eyebrow-line"></div>
+  </div>
+
+  <!-- Featured: Fecit -->
+  <a href="projects/fecit.html" style="display:contents;text-decoration:none;color:inherit;">
+    <div class="proj-feature">
+    <div class="feat-main">
+      <div class="feat-num">01 / WORK</div>
+      <div class="feat-name"><span class="feat-em">Fecit</span></div>
+      <div class="feat-org">(주)바우디움 · iOS 생산성 도구 · 2023–2024</div>
+      <div class="feat-desc">
+        실무에서 진행한 생산성 도구 iOS 애플리케이션 디자인.
+        UX 리서치, 정보구조 설계, UI 시스템 구축까지 전 과정을 담당했습니다.
+      </div>
+      <div class="feat-tags">
+        <span class="feat-tag tag-acc">UX / UI</span>
+        <span class="feat-tag tag-out">Mobile(iOS)</span>
+        <span class="feat-tag tag-out">Design System</span>
+        <span class="feat-tag tag-out">User Flow</span>
+      </div>
+    </div>
+    <div class="feat-side">
+      <div>
+        <div class="side-role-label">ROLE</div>
+        <div class="side-role-val">Sole UX Designer</div>
+      </div>
+      <div class="side-year">2023-2024</div>
+      <div class="side-arr">↗</div>
+    </div>
+    </div>
+  </a>
+
+  <!-- Small: Buddy + NUE -->
+  <div class="proj-small-row">
+    <div class="proj-small" onclick="location.href='projects/buddy.html'" style="cursor:pointer">
+      <div class="ps-num">02 / GRADUATION PROJECT</div>
+      <div class="ps-name"><em style="font-style:italic;color:var(--acc)">Buddy</em></div>
+      <div class="ps-sub">버킷리스트 달성 어시스턴트 앱<br>졸업 프로젝트 · 2021</div>
+      <div class="ps-foot">
+        <span class="ps-tag ps-tag-acc">Team ― 3</span>
+        <span class="ps-tag ps-tag-out">Smart Phone</span>
+        <span class="ps-tag ps-tag-out">Smart Watch</span>
+        <span class="ps-tag ps-tag-out">Category Artwork</span>
+        <span class="ps-arr">↗</span>
+      </div>
+    </div>
+    <div class="proj-small" onclick="location.href='projects/nue.html'" style="cursor:pointer">
+      <div class="ps-num">03 / TEAM PROJECT</div>
+      <div class="ps-name"><em style="font-style:italic;color:var(--acc)">NUE</em></div>
+      <div class="ps-sub">구독 서비스 통합 관리 앱<br>팀 프로젝트 · 2020</div>
+      <div class="ps-foot">
+        <span class="ps-tag ps-tag-acc">Team ― 3</span>
+        <span class="ps-tag ps-tag-out">Smart Phone</span>
+        <span class="ps-tag ps-tag-out">Category Artwork</span>
+        <span class="ps-tag ps-tag-out">Achievement Artwork</span>
+        <span class="ps-arr">↗</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-sec reveal" id="about">
+  <div class="about-l">
+    <div class="sec-eyebrow">
+      <div class="eyebrow-num">02</div>
+      <div class="eyebrow-title">좌표 · About</div>
+      <div class="eyebrow-line"></div>
+    </div>
+    <div class="about-big">
+      사용자의<br>경로를<br><em>설계</em>합니다
+    </div>
+    <div class="about-body">
+      UX/UI 디자이너로서 사용자가 목적지까지 가장 자연스럽게 도달할 수 있는
+      경험을 설계하는 것을 목표로 합니다. 리서치에서 시작해 프로토타입,
+      최종 UI까지 일관된 시선으로 이어갑니다.
+    </div>
+  </div>
+  <div class="about-r">
+    <div class="sec-eyebrow" style="margin-bottom:20px">
+      <div class="eyebrow-num" style="color:var(--ink3)">TIMELINE</div>
+      <div class="eyebrow-line"></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">2023–2024</div>
+      <div>
+        <div class="tl-t">(주)바우디움 · UX 디자이너</div>
+        <div class="tl-s">생산성 앱 Fecit iOS 디자인 담당 · 정규직 재직</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">2021</div>
+      <div>
+        <div class="tl-t">홍익대학교 졸업 프로젝트</div>
+        <div class="tl-s">버킷리스트 앱 Buddy 기획·디자인</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">2020</div>
+      <div>
+        <div class="tl-t">팀 프로젝트 · NUE</div>
+        <div class="tl-s">구독 관리 앱 UX/UI 디자인</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-yr">2017–2022</div>
+      <div>
+        <div class="tl-t">홍익대학교 조형대학</div>
+        <div class="tl-s">디지털미디어디자인전공 졸업</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="sec-pad reveal" id="skills">
+  <div class="sec-eyebrow">
+    <div class="eyebrow-num">03</div>
+    <div class="eyebrow-title">스펙 · Skills</div>
+    <div class="eyebrow-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="sk-cell">
+      <div class="sk-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><circle cx="17" cy="17" r="4"/></svg>
+      </div>
+      <div class="sk-name">Figma</div>
+      <div class="sk-desc">컴포넌트 시스템·오토레이아웃·프로토타이핑까지 폭넓게 활용</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:90%"></div></div>
+      <div class="sk-pct">90%</div>
+    </div>
+    <div class="sk-cell">
+      <div class="sk-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 8 12 12 15 15"/></svg>
+      </div>
+      <div class="sk-name">Prototyping</div>
+      <div class="sk-desc">인터랙션 설계 및 사용성 검증을 위한 프로토타입 제작</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:85%"></div></div>
+      <div class="sk-pct">85%</div>
+    </div>
+    <div class="sk-cell">
+      <div class="sk-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="sk-name">User Research</div>
+      <div class="sk-desc">인터뷰·설문·사용성 테스트 기반 인사이트 도출</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:80%"></div></div>
+      <div class="sk-pct">80%</div>
+    </div>
+    <div class="sk-cell">
+      <div class="sk-icon">
+        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      </div>
+      <div class="sk-name">iOS / Android Design</div>
+      <div class="sk-desc">HIG 및 Material 가이드라인 기반 모바일 UI 설계</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:75%"></div></div>
+      <div class="sk-pct">75%</div>
+    </div>
+    <div class="sk-cell">
+      <div class="sk-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="sk-name">Design System</div>
+      <div class="sk-desc">일관성 있는 컴포넌트 라이브러리 및 토큰 체계 구축</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:72%"></div></div>
+      <div class="sk-pct">72%</div>
+    </div>
+    <div class="sk-cell">
+      <div class="sk-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="sk-name">Interommunication</div>
+      <div class="sk-desc">완성도 높은 서비스를 목표로 협업자와 적극적으로 소통</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:95%"></div></div>
+      <div class="sk-pct">95%</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-sec reveal" id="contact">
+  <div class="contact-l">
+    <div>
+      <div class="sec-eyebrow">
+        <div class="eyebrow-num">04</div>
+        <div class="eyebrow-title">목적지 · Contact</div>
+        <div class="eyebrow-line"></div>
+      </div>
+      <div class="contact-big">
+        목적지에<br><em>도착</em>했습니다
+      </div>
+      <div class="contact-note">
+        어느 곳을 목적지로 하든 함께 최적의 경로를 찾아나갈 준비가
+        되어 있습니다. 협업 및 채용 문의는 언제든지 환영합니다.
+      </div>
+    </div>
+    <a href="mailto:be9shine@gmail.com" class="contact-cta">메일 보내기 →</a>
+  </div>
+  <div class="contact-r">
+    <div class="ci"><div class="ci-k">TEL</div><div class="ci-v">(+82) 10-8916-3119</div></div>
+    <div class="ci"><div class="ci-k">EMAIL</div><div class="ci-v">be9shine@gmail.com</div></div>
+    <div class="ci"><div class="ci-k">BEHANCE</div><div class="ci-v">https://www.behance.net/chronometerchoi</div></div>
+    <div class="ci"><div class="ci-k">LOCATION</div><div class="ci-v">Seoul, Korea</div></div>
+    <div class="ci"><div class="ci-k">STATUS</div><div class="ci-v open">Open to Work</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="foot-l">CIY · UX/UI Designer · Seoul · 2026</div>
+  <div class="foot-logo">C.IY</div>
+  <div class="foot-r">Route Complete ·</div>
+</footer>
+
+<script>
+  /* ── DARK / LIGHT MODE ───────────────────────────── */
+  function toggleMode() {
+    const html = document.documentElement;
+    html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', html.dataset.theme);
+  }
+  // Restore saved theme
+  (function () {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.dataset.theme = saved;
+  })();
+
+  /* ── SCROLL REVEAL ───────────────────────────────── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ── ACTIVE NAV ──────────────────────────────────── */
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navItems.forEach(n => n.style.color = '');
+        const active = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        if (active) active.style.color = 'var(--acc)';
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => navObs.observe(s));
+</script>
+</body>
+</html>
